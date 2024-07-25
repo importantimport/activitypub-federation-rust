@@ -82,7 +82,6 @@ pub async fn listen(
 ) -> Result<(), Error> {
     match webserver {
         Webserver::Axum => crate::axum::http::listen(config).await?,
-        // Webserver::ActixWeb => crate::actix_web::http::listen(config)?,
     }
     Ok(())
 }
