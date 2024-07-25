@@ -232,6 +232,7 @@ mod tests {
         sync::{atomic::AtomicUsize, Arc},
         time::Instant,
     };
+    use tokio::net::TcpListener;
     use tracing::info;
 
     // This will periodically send back internal errors to test the retry
@@ -251,10 +252,12 @@ mod tests {
             .route("/", post(dodgy_handler))
             .with_state(state);
 
-        axum::Server::bind(&"0.0.0.0:8001".parse().unwrap())
-            .serve(app.into_make_service())
-            .await
-            .unwrap();
+        axum::serve(
+            TcpListener::bind("0.0.0.0:8002").await.unwrap(),
+            app.into_make_service(),
+        )
+        .await
+        .unwrap();
     }
 
     #[tokio::test(flavor = "multi_thread")]
