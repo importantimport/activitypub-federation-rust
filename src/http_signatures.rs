@@ -23,9 +23,7 @@ use reqwest::Request;
 use reqwest_middleware::RequestBuilder;
 use rsa::{
     pkcs8::{DecodePublicKey, EncodePrivateKey, EncodePublicKey, LineEnding},
-    Pkcs1v15Sign,
-    RsaPrivateKey,
-    RsaPublicKey,
+    Pkcs1v15Sign, RsaPrivateKey, RsaPublicKey,
 };
 use serde::Deserialize;
 use sha2::{Digest, Sha256};
@@ -138,6 +136,7 @@ where
 /// from any actor of type A, and returns that actor if a valid signature is found.
 /// This function will return an `Err` variant when no signature is found
 /// or if the signature could not be verified.
+#[allow(dead_code)]
 pub(crate) async fn signing_actor<'a, A, H>(
     headers: H,
     method: &Method,
@@ -229,10 +228,12 @@ struct DigestPart {
     #[allow(dead_code)]
     pub algorithm: String,
     /// The hashsum
+    #[allow(dead_code)]
     pub digest: String,
 }
 
 impl DigestPart {
+    #[allow(dead_code)]
     fn try_from_header(h: &HeaderValue) -> Option<Vec<DigestPart>> {
         let h = h.to_str().ok()?.split(';').next()?;
         let v: Vec<_> = h
@@ -257,6 +258,7 @@ impl DigestPart {
 }
 
 /// Verify body of an inbox request against the hash provided in `Digest` header.
+#[allow(dead_code)]
 pub(crate) fn verify_body_hash(
     digest_header: Option<&HeaderValue>,
     body: &[u8],
