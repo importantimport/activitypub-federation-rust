@@ -34,13 +34,16 @@ pub async fn listen(config: &FederationConfig<DatabaseHandle>) -> Result<(), Err
         .route("/.well-known/webfinger", get(webfinger))
         .layer(FederationMiddleware::new(config));
 
-    axum::serve(
+    let server = axum::serve(
         TcpListener::bind(hostname)
             .await
             .expect("Failed to lookup domain name"),
         app.into_make_service(),
-    )
-    .await?;
+    );
+
+    tokio::spawn(async move {
+        server.await.expect("Failed to start server");
+    });
 
     Ok(())
 }
