@@ -10,8 +10,6 @@ use std::{env::args, str::FromStr};
 use tracing::log::{info, LevelFilter};
 
 mod activities;
-#[cfg(feature = "actix-web")]
-mod actix_web;
 #[cfg(feature = "axum")]
 mod axum;
 mod error;
