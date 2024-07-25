@@ -63,7 +63,6 @@ impl UrlVerifier for MyUrlVerifier {
 
 pub enum Webserver {
     Axum,
-    ActixWeb,
 }
 
 impl FromStr for Webserver {
@@ -72,7 +71,6 @@ impl FromStr for Webserver {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         Ok(match s {
             "axum" => Webserver::Axum,
-            "actix-web" => Webserver::ActixWeb,
             _ => panic!("Invalid webserver parameter, must be either `axum` or `actix-web`"),
         })
     }
@@ -84,7 +82,7 @@ pub fn listen(
 ) -> Result<(), Error> {
     match webserver {
         Webserver::Axum => crate::axum::http::listen(config)?,
-        Webserver::ActixWeb => crate::actix_web::http::listen(config)?,
+        // Webserver::ActixWeb => crate::actix_web::http::listen(config)?,
     }
     Ok(())
 }
