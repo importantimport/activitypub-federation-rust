@@ -34,8 +34,8 @@ async fn main() -> Result<(), Error> {
 
     let alpha = new_instance("localhost:8001", "alpha".to_string()).await?;
     let beta = new_instance("localhost:8002", "beta".to_string()).await?;
-    listen(&alpha, &webserver)?;
-    listen(&beta, &webserver)?;
+    listen(&alpha, &webserver).await?;
+    listen(&beta, &webserver).await?;
     info!("Local instances started");
 
     info!("Alpha user follows beta user via webfinger");

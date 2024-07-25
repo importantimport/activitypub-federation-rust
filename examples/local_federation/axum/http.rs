@@ -17,15 +17,14 @@ use axum::{
     extract::{Path, Query},
     response::IntoResponse,
     routing::{get, post},
-    Json,
-    Router,
+    Json, Router,
 };
 use axum_macros::debug_handler;
 use serde::Deserialize;
-use std::net::ToSocketAddrs;
+use tokio::net::TcpListener;
 use tracing::info;
 
-pub fn listen(config: &FederationConfig<DatabaseHandle>) -> Result<(), Error> {
+pub async fn listen(config: &FederationConfig<DatabaseHandle>) -> Result<(), Error> {
     let hostname = config.domain();
     info!("Listening with axum on {hostname}");
     let config = config.clone();
@@ -35,13 +34,14 @@ pub fn listen(config: &FederationConfig<DatabaseHandle>) -> Result<(), Error> {
         .route("/.well-known/webfinger", get(webfinger))
         .layer(FederationMiddleware::new(config));
 
-    let addr = hostname
-        .to_socket_addrs()?
-        .next()
-        .expect("Failed to lookup domain name");
-    let server = axum::Server::bind(&addr).serve(app.into_make_service());
+    axum::serve(
+        TcpListener::bind(hostname)
+            .await
+            .expect("Failed to lookup domain name"),
+        app.into_make_service(),
+    )
+    .await?;
 
-    tokio::spawn(server);
     Ok(())
 }
 
