@@ -76,13 +76,12 @@ impl FromStr for Webserver {
     }
 }
 
-pub fn listen(
+pub async fn listen(
     config: &FederationConfig<DatabaseHandle>,
     webserver: &Webserver,
 ) -> Result<(), Error> {
     match webserver {
-        Webserver::Axum => crate::axum::http::listen(config)?,
-        // Webserver::ActixWeb => crate::actix_web::http::listen(config)?,
+        Webserver::Axum => crate::axum::http::listen(config).await?,
     }
     Ok(())
 }

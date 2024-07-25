@@ -15,9 +15,9 @@ The next step is to allow other servers to fetch our actors and objects. For thi
 # use activitypub_federation::config::FederationMiddleware;
 # use axum::routing::get;
 # use crate::activitypub_federation::traits::Object;
-# use axum::headers::ContentType;
+# use axum_extra::headers::ContentType;
 # use activitypub_federation::FEDERATION_CONTENT_TYPE;
-# use axum::TypedHeader;
+# use axum_extra::TypedHeader;
 # use axum::response::IntoResponse;
 # use http::HeaderMap;
 # async fn generate_user_html(_: String, _: Data<DbConnection>) -> axum::response::Response { todo!() }
@@ -33,11 +33,11 @@ async fn main() -> Result<(), Error> {
         .route("/user/:name", get(http_get_user))
         .layer(FederationMiddleware::new(data));
 
-    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
-    tracing::debug!("listening on {}", addr);
-    axum::Server::bind(&addr)
-        .serve(app.into_make_service())
-        .await?;
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:3000")
+        .await
+        .unwrap();
+    tracing::debug!("listening on {}", listener.local_addr().unwrap());
+    axum::serve(listener, app).await.unwrap();
     Ok(())
 }
 
