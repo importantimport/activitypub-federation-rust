@@ -16,7 +16,6 @@ jobs:
     name: check
     steps:
       - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@nightly
       - uses: mozilla-actions/sccache-action@v0.0.3
     #   - run: cargo fmt -- --check
       - run: cargo clippy --all-targets --all-features
