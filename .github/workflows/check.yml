@@ -20,4 +20,5 @@ jobs:
     #   - run: cargo fmt -- --check
       - run: cargo clippy --all-targets --all-features
       - run: cargo test --all-features --no-fail-fast
+      - run: cargo doc --all-features
       - run: cargo run --example local_federation axum
