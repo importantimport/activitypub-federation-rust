@@ -253,7 +253,7 @@ mod tests {
             .with_state(state);
 
         axum::serve(
-            TcpListener::bind("0.0.0.0:8002").await.unwrap(),
+            TcpListener::bind("0.0.0.0:8001").await.unwrap(),
             app.into_make_service(),
         )
         .await
