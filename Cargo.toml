@@ -55,7 +55,7 @@ itertools = "0.13.0"
 dyn-clone = "1.0.17"
 enum_delegate = "0.2.0"
 httpdate = "1.0.3"
-http-signature-normalization-reqwest = { version = "0.10.0", default-features = false, features = [
+http-signature-normalization-reqwest = { version = "0.12.0", default-features = false, features = [
   "sha-2",
   "middleware",
   "default-spawner",
