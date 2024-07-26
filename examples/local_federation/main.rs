@@ -29,8 +29,7 @@ async fn main() -> Result<(), Error> {
     info!("Start with parameter `axum` or `actix-web` to select the webserver");
     let webserver = args()
         .nth(1)
-        .map(|arg| Webserver::from_str(&arg).unwrap())
-        .unwrap_or(Webserver::Axum);
+        .map_or(Webserver::Axum, |arg| Webserver::from_str(&arg).unwrap());
 
     let alpha = new_instance("localhost:8001", "alpha".to_string()).await?;
     let beta = new_instance("localhost:8002", "beta".to_string()).await?;

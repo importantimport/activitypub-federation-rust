@@ -16,7 +16,7 @@ pub async fn new_instance(
     name: String,
 ) -> Result<FederationConfig<DatabaseHandle>, Error> {
     let mut system_user = DbUser::new(hostname, "system".into())?;
-    system_user.ap_id = Url::parse(&format!("http://{}/", hostname))?.into();
+    system_user.ap_id = Url::parse(&format!("http://{hostname}/"))?.into();
 
     let local_user = DbUser::new(hostname, name)?;
     let database = Arc::new(Database {
@@ -70,7 +70,7 @@ impl FromStr for Webserver {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         Ok(match s {
-            "axum" => Webserver::Axum,
+            "axum" => Self::Axum,
             _ => panic!("Invalid webserver parameter, must be either `axum` or `actix-web`"),
         })
     }

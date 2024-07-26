@@ -15,6 +15,6 @@ where
     T: Into<anyhow::Error>,
 {
     fn from(t: T) -> Self {
-        Error(t.into())
+        Self(t.into())
     }
 }

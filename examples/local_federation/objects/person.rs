@@ -45,11 +45,11 @@ pub enum PersonAcceptedActivities {
 }
 
 impl DbUser {
-    pub fn new(hostname: &str, name: String) -> Result<DbUser, Error> {
+    pub fn new(hostname: &str, name: String) -> Result<Self, Error> {
         let ap_id = Url::parse(&format!("http://{}/{}", hostname, &name))?.into();
         let inbox = Url::parse(&format!("http://{}/{}/inbox", hostname, &name))?;
         let keypair = generate_actor_keypair()?;
-        Ok(DbUser {
+        Ok(Self {
             name,
             ap_id,
             inbox,
@@ -83,7 +83,7 @@ impl DbUser {
     }
 
     pub async fn follow(&self, other: &str, data: &Data<DatabaseHandle>) -> Result<(), Error> {
-        let other: DbUser = webfinger_resolve_actor(other, data).await?;
+        let other: Self = webfinger_resolve_actor(other, data).await?;
         let id = generate_object_id(data.domain())?;
         let follow = Follow::new(self.ap_id.clone(), other.ap_id.clone(), id.clone());
         self.send(follow, vec![other.shared_inbox_or_inbox()], false, data)
@@ -96,7 +96,7 @@ impl DbUser {
         let create = CreatePost::new(post.into_json(data).await?, id.clone());
         let mut inboxes = vec![];
         for f in self.followers.clone() {
-            let user: DbUser = ObjectId::from(f).dereference(data).await?;
+            let user: Self = ObjectId::from(f).dereference(data).await?;
             inboxes.push(user.shared_inbox_or_inbox());
         }
         self.send(create, inboxes, true, data).await?;
@@ -170,7 +170,7 @@ impl Object for DbUser {
     }
 
     async fn from_json(json: Self::Kind, data: &Data<Self::DataType>) -> Result<Self, Self::Error> {
-        let user = DbUser {
+        let user = Self {
             name: json.preferred_username,
             ap_id: json.id,
             inbox: json.inbox,

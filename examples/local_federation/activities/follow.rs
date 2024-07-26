@@ -24,8 +24,8 @@ pub struct Follow {
 }
 
 impl Follow {
-    pub fn new(actor: ObjectId<DbUser>, object: ObjectId<DbUser>, id: Url) -> Follow {
-        Follow {
+    pub fn new(actor: ObjectId<DbUser>, object: ObjectId<DbUser>, id: Url) -> Self {
+        Self {
             actor,
             object,
             kind: Default::default(),

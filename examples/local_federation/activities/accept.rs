@@ -19,8 +19,8 @@ pub struct Accept {
 }
 
 impl Accept {
-    pub fn new(actor: ObjectId<DbUser>, object: Follow, id: Url) -> Accept {
-        Accept {
+    pub fn new(actor: ObjectId<DbUser>, object: Follow, id: Url) -> Self {
+        Self {
             actor,
             object,
             kind: Default::default(),

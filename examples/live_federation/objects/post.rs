@@ -84,7 +84,7 @@ impl Object for DbPost {
             &json.content, &json.id
         );
         let creator = json.attributed_to.dereference(data).await?;
-        let post = DbPost {
+        let post = Self {
             text: json.content,
             ap_id: json.id.clone(),
             creator: json.attributed_to.clone(),

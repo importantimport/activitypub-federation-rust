@@ -18,9 +18,9 @@ pub struct DbPost {
 }
 
 impl DbPost {
-    pub fn new(text: String, creator: ObjectId<DbUser>) -> Result<DbPost, Error> {
+    pub fn new(text: String, creator: ObjectId<DbUser>) -> Result<Self, Error> {
         let ap_id = generate_object_id(creator.inner().domain().unwrap())?.into();
-        Ok(DbPost {
+        Ok(Self {
             text,
             ap_id,
             creator,
@@ -80,7 +80,7 @@ impl Object for DbPost {
     }
 
     async fn from_json(json: Self::Kind, data: &Data<Self::DataType>) -> Result<Self, Self::Error> {
-        let post = DbPost {
+        let post = Self {
             text: json.content,
             ap_id: json.id,
             creator: json.attributed_to,

@@ -35,11 +35,11 @@ pub enum PersonAcceptedActivities {
 }
 
 impl DbUser {
-    pub fn new(hostname: &str, name: &str) -> Result<DbUser, Error> {
+    pub fn new(hostname: &str, name: &str) -> Result<Self, Error> {
         let ap_id = Url::parse(&format!("https://{}/{}", hostname, &name))?.into();
         let inbox = Url::parse(&format!("https://{}/{}/inbox", hostname, &name))?;
         let keypair = generate_actor_keypair()?;
-        Ok(DbUser {
+        Ok(Self {
             name: name.to_string(),
             ap_id,
             inbox,
@@ -108,7 +108,7 @@ impl Object for DbUser {
         json: Self::Kind,
         _data: &Data<Self::DataType>,
     ) -> Result<Self, Self::Error> {
-        Ok(DbUser {
+        Ok(Self {
             name: json.preferred_username,
             ap_id: json.id,
             inbox: json.inbox,

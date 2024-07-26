@@ -26,8 +26,8 @@ pub struct CreatePost {
 }
 
 impl CreatePost {
-    pub fn new(note: Note, id: Url) -> CreatePost {
-        CreatePost {
+    pub fn new(note: Note, id: Url) -> Self {
+        Self {
             actor: note.attributed_to.clone(),
             to: note.to.clone(),
             object: note,
