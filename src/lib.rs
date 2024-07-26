@@ -9,6 +9,7 @@
 #![doc = include_str!("../docs/09_sending_activities.md")]
 #![doc = include_str!("../docs/10_fetching_objects_with_unknown_type.md")]
 #![deny(missing_docs)]
+#![warn(clippy::all)]
 
 pub mod activity_queue;
 pub mod activity_sending;
